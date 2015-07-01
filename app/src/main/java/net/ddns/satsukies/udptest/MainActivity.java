@@ -1,17 +1,47 @@
 package net.ddns.satsukies.udptest;
 
+import android.location.GpsStatus;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 
 public class MainActivity extends ActionBarActivity {
+    private TextView txt;
+    private Button btn;
+
+    public UDPUtil mUdpUtil = new UDPUtil();
+    public String recieveValue;
+
+    private String[] socketSplit = new String[100];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        txt = (TextView) findViewById(R.id.text);
+        btn = (Button) findViewById(R.id.button);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //ここでUDP通信のスレッド生成と実行
+                (new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        while (true) {
+                            recieveValue = new String(mUdpUtil.getMessage());
+
+                            socketSplit = recieveValue.split(",");
+                        }
+                    }
+                })).start();
+            }
+        });
     }
 
     @Override
