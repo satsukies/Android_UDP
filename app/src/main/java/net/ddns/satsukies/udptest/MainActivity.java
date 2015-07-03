@@ -9,7 +9,11 @@ import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -18,16 +22,20 @@ import java.net.InetAddress;
 import static java.lang.System.*;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
 
-    Button btn1, btn2;
-    TextView txt1, txt2;
-    SurfaceView mSurfaceView;
+    EditText editIp, editPort;
+
+    Button btnIp, btnUp, btnDown, btnRight, btnLeft;
+
+    RadioGroup mRadioGroup;
+    RadioButton radio1p, radio2p;
+
+    int playerId = 0;
 
     //Processingに合わせてbyte型にする
     byte[] sendBuffer = new byte[8];
 
-    int n;
     DatagramSocket mSocket;
     DatagramPacket mPacket;
 
@@ -38,55 +46,43 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btn1 = (Button) findViewById(R.id.btn1);
-        btn2 = (Button) findViewById(R.id.btn2);
-        txt1 = (TextView) findViewById(R.id.txt1);
-        txt2 = (TextView) findViewById(R.id.txt2);
-
-        mSurfaceView = (SurfaceView) findViewById(R.id.touch);
-
         final String remoteIP = "192.168.43.255";
         final int portNum = 12345;
 
-        // Button1 がクリックされた時に呼び出されるコールバックを登録
-        btn1.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                n++;
-                txt1.setText(n + "");
+        editIp = (EditText) findViewById(R.id.edit_ip);
+        editPort = (EditText) findViewById(R.id.edit_port);
 
-                sendMessage(remoteIP, portNum, 100, 200);
+        btnUp = (Button) findViewById(R.id.up);
+        btnUp.setOnClickListener(this);
 
-            }
-        });
+        btnDown = (Button) findViewById(R.id.down);
+        btnDown.setOnClickListener(this);
 
-        // カウンタの減少
-        btn2.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                n--;
-                txt1.setText(n + "");
-            }
-        });
+        btnRight = (Button) findViewById(R.id.right);
+        btnRight.setOnClickListener(this);
 
-        mSurfaceView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                txt1.setText((int) event.getX() + ":" + (int) event.getY());
-                sendMessage(remoteIP, portNum, (int) event.getX(), (int) event.getY());
-                return true;
-            }
-        });
+        btnLeft = (Button) findViewById(R.id.left);
+        btnLeft.setOnClickListener(this);
 
-        n = 0;        // カウント値の初期値
+        btnIp = (Button) findViewById(R.id.btn_ip);
+        btnIp.setOnClickListener(this);
+
+        mRadioGroup = (RadioGroup)findViewById(R.id.radioGroup);
+        mRadioGroup.setOnCheckedChangeListener(this);
+
+        radio1p = (RadioButton)findViewById(R.id.radio1);
+        radio2p =(RadioButton)findViewById(R.id.radio2);
+
+
+
         try {
             InetAddress host = InetAddress.getByName(remoteIP);      // IPアドレス
-            String message = "send by Android";  // 送信メッセージ
+            String message = "Initialize";  // 送信メッセージ
             mSocket = new DatagramSocket();  //DatagramSocket 作成
             byte[] data = message.getBytes();
             mPacket = new DatagramPacket(data, data.length, host, portNum);  //DatagramPacket 作成
-            txt2.setText("初期化が完了しました");
         } catch (Exception e) {
             err.println("Exception : " + e);
-            txt2.setText("初期化に失敗しました");
         }
     }
 
@@ -119,7 +115,7 @@ public class MainActivity extends ActionBarActivity {
         };
     }
 
-    void sendMessage(final String ip, final int port, final int x, final int y) {
+    void sendMessage(final String ip, final int port, final int code, final int player) {
         // UDP　送信
         new Thread(new Runnable() {
             public void run() {
@@ -128,25 +124,74 @@ public class MainActivity extends ActionBarActivity {
                     mSocket = new DatagramSocket();  //DatagramSocket 作成
 
                     byte[] tmpArray;
-                    tmpArray = intToByteArray(x);
+                    tmpArray = intToByteArray(code);
                     arraycopy(tmpArray, 0, sendBuffer, 0, 4);
-                    tmpArray = intToByteArray(y);
+                    tmpArray = intToByteArray(player);
                     System.arraycopy(tmpArray, 0, sendBuffer, 4, 4);
 
                     mPacket = new DatagramPacket(sendBuffer, sendBuffer.length, host, port);  //DatagramPacket 作成
                     mSocket.send(mPacket);
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            txt2.setText("送信完了しました");
-                        }
-                    });
                 } catch (Exception e) {
                     err.println("Exception : " + e);
-                    txt2.setText("送信失敗しました");
                 }
             }
         }).start();
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        int keyCode = 0;
+        //Buttonが押されたときの挙動
+        switch (v.getId()) {
+            case R.id.btn_ip:
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        editIp.setFocusable(false);
+                        editPort.setFocusable(false);
+                    }
+                });
+                return;
+            case R.id.up:
+                keyCode = 1;
+                break;
+            case R.id.down:
+                keyCode = 2;
+                break;
+            case R.id.right:
+                keyCode = 3;
+                break;
+            case R.id.left:
+                keyCode = 4;
+                break;
+            default:
+                keyCode = 0;
+                break;
+        }
+
+        try {
+            sendMessage(editIp.getText().toString().equals("") ? "192.168.11.33" : editIp.getText().toString(), editPort.getText().toString().equals("") ? 12345 : Integer.parseInt(editPort.getText().toString()), keyCode, playerId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
+        RadioButton btn = (RadioButton)findViewById(checkedId);
+        Toast.makeText(getApplicationContext(), "selected:" + btn.getText(), Toast.LENGTH_SHORT).show();
+
+        switch (checkedId){
+            case R.id.radio1:
+                playerId = 1;
+                break;
+            case R.id.radio2:
+                playerId = 2;
+                break;
+            default:
+                playerId = 0;
+                break;
+        }
     }
 }
