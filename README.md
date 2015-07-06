@@ -1,4 +1,14 @@
 # Android_UDP
+
+![Screenshot](./ScreenShot/ScreenShot.png)
+
+##What's this
 Android上で動作するUDP通信アプリ。
 
-目標は、__Processingで動作しているアプリと通信する__こと。
+テトリスゲームが実装されてます。
+ただし、このアプリはコントローラ機能のみを提供。
+
+##Goal
+__Processingで動作しているプログラムと通信する__こと。
+[Processing_UDP]("https://github.com/satsukies/Processing_UDP")
+でゲーム本体を配布してます。
