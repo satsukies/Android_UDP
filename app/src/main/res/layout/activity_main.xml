@@ -9,46 +9,157 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/hello"
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_centerHorizontal="true"
+        android:text="UdpTest"
+        android:textSize="48dp" />
+
+    <LinearLayout
+        android:id="@+id/linear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edit_ip"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            android:layout_weight="7"
+            android:hint="192.168.1.1"
+            android:inputType="textUri"
+            android:singleLine="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text=":" />
+
+        <EditText
+            android:id="@+id/edit_port"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:hint="12345"
+            android:inputType="numberDecimal"
+            android:singleLine="true" />
+
+    </LinearLayout>
 
     <Button
-        android:id="@+id/btn1"
+        android:id="@+id/btn_ip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/hello"
-        android:text="btn1" />
+        android:layout_below="@id/linear"
+        android:layout_centerHorizontal="true"
+        android:text="set ip address" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_ip">
+
+        <RadioButton
+            android:id="@+id/radio1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Player 1" />
+
+        <RadioButton
+            android:id="@+id/radio2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Player 2" />
+
+    </RadioGroup>
 
     <Button
-        android:id="@+id/btn2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/hello"
-        android:layout_toRightOf="@id/btn1"
-        android:text="btn2" />
+        android:id="@+id/up"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/radioGroup"
+        android:layout_centerHorizontal="true"
+        android:text="↑" />
 
-    <TextView
-        android:id="@+id/txt1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btn1"
-        android:text="txt1" />
+    <Space
+        android:id="@+id/space"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/up"
+        android:layout_centerHorizontal="true" />
 
-    <TextView
-        android:id="@+id/txt2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txt1"
-        android:text="txt2" />
+    <Button
+        android:id="@+id/left"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/up"
+        android:layout_toLeftOf="@id/space"
+        android:text="←" />
 
-    <SurfaceView
-        android:id="@+id/touch"
-        android:layout_width="800px"
-        android:layout_height="600px"
-        android:layout_below="@id/txt2"
-        android:layout_centerInParent="true"
-        android:background="@android:color/holo_orange_dark" />
+    <Button
+        android:id="@+id/right"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/up"
+        android:layout_toRightOf="@id/space"
+        android:text="→" />
+
+    <Button
+        android:id="@+id/down"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_below="@id/space"
+        android:layout_centerHorizontal="true"
+        android:text="↓" />
+    <!--
+        <TextView
+            android:id="@+id/hello"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/down"
+            android:text="@string/hello_world" />
+
+        <Button
+            android:id="@+id/btn1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/hello"
+            android:text="btn1" />
+
+        <Button
+            android:id="@+id/btn2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/hello"
+            android:layout_toRightOf="@id/btn1"
+            android:text="btn2" />
+
+        <TextView
+            android:id="@+id/txt1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btn1"
+            android:text="txt1" />
+
+        <TextView
+            android:id="@+id/txt2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt1"
+            android:text="txt2" />
+
+        <SurfaceView
+            android:id="@+id/touch"
+            android:layout_width="800px"
+            android:layout_height="600px"
+            android:layout_below="@id/txt2"
+            android:layout_centerHorizontal="true"
+            android:background="@android:color/holo_orange_dark" />
+            -->
 
 </RelativeLayout>
