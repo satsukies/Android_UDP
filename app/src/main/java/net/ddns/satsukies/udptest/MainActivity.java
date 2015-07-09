@@ -1,5 +1,6 @@
 package net.ddns.satsukies.udptest;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
@@ -11,6 +12,9 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+
+import com.github.johnpersano.supertoasts.SuperCardToast;
+import com.github.johnpersano.supertoasts.SuperToast;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -48,6 +52,8 @@ public class MainActivity extends ActionBarActivity implements RadioGroup.OnChec
     DatagramPacket mPacket;
 
     final Handler mHandler = new Handler();
+
+    Activity mActivity = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,7 +133,7 @@ public class MainActivity extends ActionBarActivity implements RadioGroup.OnChec
 
     @OnClick({R.id.btn_ip, R.id.up, R.id.down, R.id.right, R.id.left})
     public void bindButton(View v) {
-        Toast.makeText(getApplicationContext(), "onClick", Toast.LENGTH_SHORT).show();
+        SuperCardToast.create(mActivity, "onClick", SuperToast.Duration.VERY_SHORT).show();
         int keyCode = 0;
         //Buttonが押されたときの挙動
         switch (v.getId()) {
