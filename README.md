@@ -10,5 +10,5 @@ Android上で動作するUDP通信アプリ。
 
 ##Goal
 __Processingで動作しているプログラムと通信する__こと。
-[Processing_UDP]("https://github.com/satsukies/Processing_UDP")
+[satsukies/Processing_UDP]("https://github.com/satsukies/Processing_UDP")
 でゲーム本体を配布してます。

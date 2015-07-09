@@ -1,35 +1,43 @@
 package net.ddns.satsukies.udptest;
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-import static java.lang.System.*;
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+import static java.lang.System.arraycopy;
+import static java.lang.System.err;
 
 
-public class MainActivity extends ActionBarActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
+public class MainActivity extends ActionBarActivity implements RadioGroup.OnCheckedChangeListener {
 
-    EditText editIp, editPort;
+    @Bind(R.id.edit_ip) EditText editIp;
+    @Bind(R.id.edit_port) EditText editPort;
 
-    Button btnIp, btnUp, btnDown, btnRight, btnLeft;
+    @Bind(R.id.btn_ip) Button btnIp;
+    @Bind(R.id.up) Button btnUp;
+    @Bind(R.id.down) Button btnDown;
+    @Bind(R.id.right) Button btnRight;
+    @Bind(R.id.left) Button btnLeft;
 
-    RadioGroup mRadioGroup;
-    RadioButton radio1p, radio2p;
+    @Bind(R.id.radioGroup) RadioGroup mRadioGroup;
+    @Bind(R.id.radio1) RadioButton radio1p;
+    @Bind(R.id.radio2) RadioButton radio2p;
 
     int playerId = 0;
 
@@ -46,34 +54,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ButterKnife.bind(this);
+
         final String remoteIP = "192.168.43.255";
         final int portNum = 12345;
 
-        editIp = (EditText) findViewById(R.id.edit_ip);
-        editPort = (EditText) findViewById(R.id.edit_port);
-
-        btnUp = (Button) findViewById(R.id.up);
-        btnUp.setOnClickListener(this);
-
-        btnDown = (Button) findViewById(R.id.down);
-        btnDown.setOnClickListener(this);
-
-        btnRight = (Button) findViewById(R.id.right);
-        btnRight.setOnClickListener(this);
-
-        btnLeft = (Button) findViewById(R.id.left);
-        btnLeft.setOnClickListener(this);
-
-        btnIp = (Button) findViewById(R.id.btn_ip);
-        btnIp.setOnClickListener(this);
-
-        mRadioGroup = (RadioGroup)findViewById(R.id.radioGroup);
         mRadioGroup.setOnCheckedChangeListener(this);
-
-        radio1p = (RadioButton)findViewById(R.id.radio1);
-        radio2p =(RadioButton)findViewById(R.id.radio2);
-
-
 
         try {
             InetAddress host = InetAddress.getByName(remoteIP);      // IPアドレス
@@ -139,8 +125,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     }
 
-    @Override
-    public void onClick(View v) {
+    @OnClick({R.id.btn_ip, R.id.up, R.id.down, R.id.right, R.id.left})
+    public void bindButton(View v) {
+        Toast.makeText(getApplicationContext(), "onClick", Toast.LENGTH_SHORT).show();
         int keyCode = 0;
         //Buttonが押されたときの挙動
         switch (v.getId()) {
